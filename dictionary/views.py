@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request, *args, **kwargs):
+    if request.method == 'GET':
+        context = {
+            'title': 'Dictionary App'
+        }
+        return render( request, 'dictionary/index.html', context )
