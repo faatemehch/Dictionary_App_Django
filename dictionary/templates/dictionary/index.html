@@ -8,29 +8,38 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                       placeholder="Write the word to find the definition" name="word">
+                <input type="text" class="form-control"
+                       placeholder="Write the word to find the definition" name="word" required id="word-input">
             </div>
             <button type="submit" class="btn btn-success">Search <i style="font-size:24px" class="fa">&#xf002;</i>
             </button>
         </form>
     </div>
-    <div class="container border shadow p-2 mt-4 col-md-5 col-sm-6 mb-4">
-        <i class="text-danger">Word</i>
-        <hr>
-        <p class="text-justify p-1">
-            a unit of language, consisting of one or more spoken sounds or their written representation, that functions
-            as a
-            principal carrier of meaning. Words are composed of one or more morphemes and are either the smallest units
-            susceptible
-            of independent use or consist of two or three such units combined under certain linking conditions, as with
-            the loss of
-            primary accent that distinguishes the one-word blackbird (primary stress on “black”, and secondary stress on
-            “bird”)
-            from black bird (primary stress on both words). Words are usually separated by spaces in writing, and are
-            distinguished
-            phonologically, as by accent, in many languages.
-        </p>
+    <div class="container border shadow p-2 mt-4 col-md-5 col-sm-6 mb-4" id="word-box">
+
     </div>
     <div class="container mt-3 mb-3 bg-primary p-4"></div>
+    <!-- JS --->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $('.btn').click(function (e) {
+            e.preventDefault();
+            var href = "{% url 'dictionary:index_view' %}"
+            $.ajax({
+                {#type: 'POST',#}
+                url: href,
+                data: {'word': $('#word-input').val()},
+                success: function (response) {
+                    $("#word-box").empty();
+                    console.log(response.word);
+                    temp = '<i class=\"text-danger\">' + response.word + '</i><hr><p class=\"text-justify p-1\">' + response.definition + '</p>'
+                    $("#word-box").append(temp);
+                    $("form").trigger('reset'); //reset the form
+                },
+                error: function (response) {
+                    {#console.log(response)#}
+                }
+            });
+        })
+    </script>
 {% endblock %}
