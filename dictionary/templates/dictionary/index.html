@@ -8,8 +8,8 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" class="form-control"
-                       placeholder="Write the word to find the definition" name="word" required id="word-input">
+                <input type="text" class="form-control" placeholder="Write the word to find the definition" name="word"
+                       required id="word-input">
             </div>
             <button type="submit" class="btn btn-success">Search <i style="font-size:24px" class="fa">&#xf002;</i>
             </button>
@@ -22,22 +22,20 @@
     <!-- JS --->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript">
-        $('.btn').click(function (e) {
+        $('button').click(function (e) {
             e.preventDefault();
-            var href = "{% url 'dictionary:index_view' %}"
+            var content = $('#word-input').val();
+            var url = 'definition/' + content
             $.ajax({
-                {#type: 'POST',#}
-                url: href,
+                url: url,
                 data: {'word': $('#word-input').val()},
                 success: function (response) {
                     $("#word-box").empty();
-                    console.log(response.word);
+                    $("form").trigger('reset'); //reset the form
                     temp = '<i class=\"text-danger\">' + response.word + '</i><hr><p class=\"text-justify p-1\">' + response.definition + '</p>'
                     $("#word-box").append(temp);
-                    $("form").trigger('reset'); //reset the form
                 },
                 error: function (response) {
-                    {#console.log(response)#}
                 }
             });
         })
