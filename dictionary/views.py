@@ -35,11 +35,13 @@ def get_definition(request, word):
     soup = BeautifulSoup( response.content, 'html.parser' )
     # the definitions are in span tag so fine them
     spans = soup.find_all( 'span', {"class": "one-click-content"} )
-    print( spans[0].text )
     context = {
-        'title': 'Dictionary App',
-        'word': word,
-        'definition': spans[0].text
+        'title': 'Dictionary App'
     }
-    print( context )
+    if len( spans ) != 0:
+        context['word'] = word
+        context['definition'] = spans[0].text
+    else:
+        context['word'] = word
+        context['definition'] = 'Not found'
     return JsonResponse( context )
