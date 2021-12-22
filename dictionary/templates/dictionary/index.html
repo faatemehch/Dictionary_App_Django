@@ -25,10 +25,11 @@
         $('button').click(function (e) {
             e.preventDefault();
             var content = $('#word-input').val();
-            var url = 'definition/' + content
+            var url = 'definition/' + content + '/'
             $.ajax({
                 url: url,
                 data: {'word': $('#word-input').val()},
+                type: 'POST',
                 success: function (response) {
                     $("#word-box").empty();
                     $("form").trigger('reset'); //reset the form
